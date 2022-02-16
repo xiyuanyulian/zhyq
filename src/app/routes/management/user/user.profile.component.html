@@ -1,0 +1,53 @@
+<div class="modal-header">
+    <div class="modal-title">个人资料</div>
+</div>
+<div nz-row>
+    <div nz-col [nzMd]="24">
+        <nz-card [nzBordered]="false" [nzHoverable]="false" class="ant-card__body-nopadding">
+            <div class="text-center bg-center py-lg text-white" style="background-image: url('./assets/img/half-float-bg-1.jpg')">
+                <nz-upload class="avatar-uploader" nzName="avatar" [nzShowUploadList]="false" nzAction="api/user/{{user.uid}}/avatar" [nzFileType]="'image/png,image/jpeg'" [nzBeforeUpload]="beforeUpload">
+                    <ng-container>
+                        <span nz-tooltip [nzTooltipTitle]="'点击更换头像'">
+                            <nz-avatar *ngIf="!avatar.avatar" nzSize="large" nzIcon="user"></nz-avatar>
+                            <nz-avatar *ngIf="avatar.avatar" nzSize="large" [nzSrc]="avatar.avatar"></nz-avatar>
+                        </span>
+                    </ng-container>
+                </nz-upload>
+                <h3 class="text-white">
+                    <strong>{{user?.fullname}}</strong>
+                </h3>
+                <p *ngIf="orgs">
+                    <i class="icon-location-pin"></i>
+                    <strong *ngFor="let org of orgs">{{org.name}}</strong>
+                </p>
+            </div>
+
+            <nz-divider nzText="基本信息"></nz-divider>
+            <nz-form-item nz-row class="mb-sm">
+                <nz-form-label [nzSpan]="10">账号</nz-form-label>
+                <nz-form-control [nzSpan]="14" [nzLg]="8">
+                    <input nz-input [ngModel]="user.username" name="username" readonly="true" />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item nz-row class="mb-sm">
+                <nz-form-label [nzSpan]="10">性别</nz-form-label>
+                <nz-form-control [nzSpan]="14" [nzLg]="8">
+                    <input nz-input [ngModel]="user.gender === '1' ? '男':'女' " name="uid" readonly="true" />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item nz-row class="mb-sm">
+                <nz-form-label [nzSpan]="10">科室</nz-form-label>
+                <nz-form-control [nzSpan]="14" [nzLg]="8">
+                    <input nz-input [ngModel]="user.section" name="position" readonly="true" />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item nz-row class="mb-sm">
+                <nz-form-label [nzSpan]="10">手机</nz-form-label>
+                <nz-form-control [nzSpan]="14" [nzLg]="8">
+                    <input nz-input [ngModel]="user.mobile" name="mobile" readonly="true" />
+                </nz-form-control>
+            </nz-form-item>
+
+        </nz-card>
+    </div>
+</div>

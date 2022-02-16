@@ -1,0 +1,71 @@
+<div class="modal-header">
+    <div class="modal-title">{{title || "用户选择"}}</div>
+</div>
+<div nz-row [nzGutter]="8" class="search-form" nzType="flex" nzJustify="end">
+    <div nz-col>
+        <form nz-form [nzLayout]="'inline'">
+            <nz-form-item>
+                <nz-form-control>
+                    <nz-select [(ngModel)]="s.enabled" name="enabled" (ngModelChange)="load(true)"
+                        [nzAllowClear]="false">
+                        <nz-option nzValue="" nzLabel="状态不限"></nz-option>
+                        <nz-option nzValue="false" nzLabel="禁用"></nz-option>
+                        <nz-option nzValue="true" nzLabel="启用"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control>
+                    <nz-input-group [nzSuffix]="suffixTemplate">
+                        <input type="text" nz-input [(ngModel)]="s.keyword" name="keyword" placeholder="请输入关键字">
+                    </nz-input-group>
+                    <ng-template #suffixTemplate>
+                        <i nz-icon nzType="close" nzTheme="outline" *ngIf="s.keyword" (click)="clear()"></i>
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control>
+                    <button nz-button (click)="load(true)">搜索</button>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </div>
+</div>
+
+<nz-table #nzTable class="simple-table" [nzData]="list" [nzFrontPagination]="false" [nzTotal]="total"
+    [(nzPageIndex)]="s.page" [(nzPageSize)]="s.rows" [nzShowTotal]="showTotal" (nzPageIndexChange)="load()"
+    [nzBordered]="false" [nzSize]="'middle'">
+    <thead>
+        <tr>
+            <th> &nbsp;</th>
+            <th>部门</th>
+            <th>姓名</th>
+            <th>用户名</th>
+            <th>手机</th>
+            <th>邮箱</th>
+            <th>状态</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let i of nzTable.data" [style.color]="!i.node.enabled ? 'red' : ''">
+            <td nzShowCheckbox  [(nzChecked)]="i.node.checked"
+                (nzCheckedChange)="toggleCheck(i.node)"></td>
+            <td>{{i.node.org_name}}</td>
+            <td>{{i.node.fullname}}</td>
+            <td>{{i.node.username}}</td>
+            <td>{{i.node.mobile}}</td>
+            <td>{{i.node.email}}</td>
+            <td >{{!!i.node.enabled | dict:"enabled"}}</td>
+        </tr>
+    </tbody>
+</nz-table>
+
+<div class="modal-footer">
+    <button nz-button (click)="close()">关闭</button>
+    <button nz-button [nzLoading]="http.loading" [nzType]="'primary'" (click)="save($event)">确定</button>
+</div>
+
+<ng-template #showTotal>
+    共{{total}}条
+</ng-template>

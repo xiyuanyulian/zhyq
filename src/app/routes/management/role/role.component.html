@@ -1,0 +1,31 @@
+<div class="content__title">
+    <h1>角色管理</h1>
+</div>
+<div nz-row [nzGutter]="8">
+    <div nz-col class="gutter-row" [nzSpan]="mainPanelSize">
+        <avalon-role-list (onRoleChanged)="changeRole($event)" (onOpenPanel)="openSettingPanel($event)"></avalon-role-list>
+    </div>
+    <div nz-col class="gutter-row" [nzSpan]="settingPanelSize" *ngIf="showSettingPanel">
+        <section>
+            <div style="background: #FFF; padding:10px;">
+                <div nz-row [nzJustify]="'space-between'">
+                    <span>
+                        <i nz-icon nzType="setting"></i> &nbsp;
+                        <strong>{{role.name}}设置</strong>
+                    </span>
+                    <button nz-button nzSize="small" (click)="openSettingPanel()" class="panel-close-btn">
+                        <i nz-icon nzType="close"></i>
+                    </button>
+                </div>
+                <nz-tabset [(nzSelectedIndex)]="tabIdx">
+                    <nz-tab nzTitle="权限">
+                        <avalon-role-permission [role]="r"></avalon-role-permission>
+                    </nz-tab>
+                    <nz-tab nzTitle="用户">
+                        <avalon-role-user [role]="r"></avalon-role-user>
+                    </nz-tab>
+                </nz-tabset>
+            </div>
+        </section>
+    </div>
+</div>

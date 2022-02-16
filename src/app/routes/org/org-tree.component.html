@@ -1,0 +1,20 @@
+<nz-card [nzBordered]="false" nzTitle="机构" [nzExtra]="extra">
+    <nz-input-group [nzSuffix]="suffixIcon">
+        <input type="text" nz-input placeholder="机构名称" [(ngModel)]="searchValue" />
+    </nz-input-group>
+    <ng-template #suffixIcon>
+        <i nz-icon nzType="search"></i>
+    </ng-template>
+    <nz-tree #tree [nzData]="nodes" [nzCheckable]="false" [nzExpandedKeys]="defaultExpandedKeys" [nzSearchValue]="searchValue" (nzClick)="onSelect($event)">
+    </nz-tree>
+</nz-card>
+<ng-template #extra>
+    <a class="ant-dropdown-link" nz-dropdown [nzPlacement]="'bottomRight'" [nzDropdownMenu]="menu">
+        <span>操作</span> <i nz-icon nzType="bars"></i>
+    </a>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+        <ul nz-menu>
+            <li nz-menu-item (click)="load()"><i nz-icon nzType="reload"></i>刷新</li>
+        </ul>
+    </nz-dropdown-menu>
+</ng-template>

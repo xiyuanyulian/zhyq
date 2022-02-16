@@ -1,0 +1,116 @@
+<nz-card nzTitle="机构用户" [nzBordered]="false">
+    <div nz-row [nzGutter]="8" [nzJustify]="'space-between'">
+        <div nz-col>
+            <button nz-button (click)="edit({uid:'', enabled: true, gid:_group?_group.id:'', org_code:_group?_group.code:'', org_name:_group?_group.name:''})" nzType="primary">新建</button>
+            <!-- <button nz-button down-file http-url="{{downloadFile.exprotUrl}}" file-name="用户-导出数据.xlsx">
+                <i nz-icon nzType="download"></i>
+                导出数据
+            </button> -->
+        </div>
+        <form nz-form [nzLayout]="'inline'">
+            <div nz-col >
+                <nz-form-item>
+                    <nz-form-control>
+                        <nz-select [(ngModel)]="s.enabled" (ngModelChange)="load(true)" name="enabled" [nzAllowClear]="false">
+                            <nz-option nzValue="" nzLabel="全部"></nz-option>
+                            <nz-option nzValue="false" nzLabel="禁用"></nz-option>
+                            <nz-option nzValue="true" nzLabel="启用"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                    <nz-form-control>
+                        <input type="text" nz-input [(ngModel)]="s.keyword" name="keyword" placeholder="关键字" />
+                    </nz-form-control>
+                    <nz-form-control>
+                        <button nz-button (click)="load(true)">
+                            <i nz-icon nzType="search"></i>
+                        </button>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </form>
+    </div>
+    <nz-table #nzTable class="simple-table" [nzData]="list" [nzShowTotal]="showTotal" [nzFrontPagination]="false" [nzTotal]="total" [(nzPageIndex)]="s.page" [(nzPageSize)]="s.rows" (nzPageIndexChange)="load()" [nzBordered]="false" [nzSize]="'middle'">
+        <thead>
+            <tr>
+                <th >编号</th>
+                <th >姓名</th>
+                <th >账号</th>
+                <th >角色</th>
+                <th  nzWidth="150px">联系方式</th>
+                <th  nzWidth="60px">状态</th>
+                <th nzWidth="110px">&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr nz-tbody-tr *ngFor="let i of nzTable.data" [style.color]="!i.node.enabled ? 'red' : ''" (click)="pickRow(i.node)">
+                <td>
+                    <span nz-tooltip [nzTooltipTitle]="i.node.uid">{{i.node.uid | slice:0:4}}...</span>
+                </td>
+                <td>{{i.node.fullname}}</td>
+                <td>{{i.node.username}}</td>
+                <td>
+                    <span nz-tooltip [nzTooltipTitle]="i.node.role_name">{{i.node.role_name | slice:0:6}}</span>
+                </td>
+                <td>
+                    手机：{{i.node.mobile}}<br /> 邮箱：{{i.node.email}}
+                </td>
+                <td >{{!!i.node.enabled | dict:"enabled"}}</td>
+                <td>
+                    <a (click)="edit(i.node)">编辑</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a (click)="toggleEnabled(i.node)">{{ i.node.enabled ? "禁用": "启用" }}</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a (click)="open(i.node)" *ngIf="showRole" nzType="primary">角色</a>
+                    <nz-drawer [nzClosable]="false" [nzVisible]="visible" [nzWidth]="400" nzPlacement="right" [(nzTitle)]="s2.viewName" (nzOnClose)="close()">
+                        <nz-table #t class="simple-table" [nzShowTotal]="showTotal1" [nzData]="rolelist" [nzTotal]="roletotal" [(nzPageIndex)]="s2.page" [(nzPageSize)]="s2.rows" [nzFrontPagination]="false" (nzPageIndexChange)="loadRole()" (nzPageSizeChange)="loadRole(true)"
+                            [nzShowPagination]="true" [nzBordered]="false" [nzShowSizeChanger]="true" [nzSize]="'middle'">
+                            <thead>
+                                <tr>
+                                    <th> &nbsp;</th>
+                                    <th>角色编号</th>
+                                    <th>角色名称</th>
+                                    <th>备注</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let i of t.data">
+                                    <td nzShowCheckbox [(nzChecked)]="i.node.checked" [nzDisabled]="i.node.disabled" (nzCheckedChange)="toggleRole(i.node)" ></td>
+                                    <td >{{i.node.code}}</td>
+                                    <td>{{i.node.name}}</td>
+                                    <td>{{i.node.remark}}</td>
+                                </tr>
+                            </tbody>
+                        </nz-table>
+                    </nz-drawer>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a nz-dropdown [nzDropdownMenu]="menu">更多<i nz-icon nzType="down"></i></a>
+                    <nz-dropdown-menu #menu="nzDropdownMenu">
+                        <ul nz-menu>
+                            <li nz-menu-item (click)="showPasswordDialog(i.node)">修改密码</li>
+                        </ul>
+                    </nz-dropdown-menu>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</nz-card>
+
+<nz-modal [nzVisible]="showPwdDialog" [nzTitle]="'修改密码'" [nzContent]="pwdContent" (nzOnCancel)="handleCancel($event)" (nzOnOk)="handleOk($event)">
+    <ng-template #pwdContent>
+        <form nz-form #pwdForm="ngForm">
+            <nz-form-item>
+                <nz-form-control>
+                    <input type="password" nz-input [(ngModel)]="password" name="password" placeholder="请输入新的密码" [nzSize]="'large'" />
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </ng-template>
+</nz-modal>
+
+<ng-template #showTotal>
+    共{{total}}条
+</ng-template>
+
+<ng-template #showTotal1>
+    共{{roletotal}}条
+</ng-template>

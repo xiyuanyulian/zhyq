@@ -1,0 +1,59 @@
+<div nz-row [nzGutter]="8" [nzJustify]="'space-between'" class="search-form">
+    <div nz-col>
+        <button nz-button (click)="edit({})" nzType="primary">新建</button>
+    </div>
+    <div nz-col>
+        <form nz-form [nzLayout]="'inline'">
+            <nz-form-item>
+                <nz-form-control>
+                    <nz-input-group  nzSize="large" [nzSuffix]="suffixTemplate">
+                        <input type="text" nz-input [(ngModel)]="s.code" name="code" placeholder="角色编号">
+                    </nz-input-group>
+                    <ng-template #suffixTemplate>
+                        <i nz-icon nzType="close" nzTheme="outline" *ngIf="s.code" (click)="clear('code')"></i>
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <!-- <nz-form-control> -->
+                    <nz-input-group  nzSize="large" [nzSuffix]="suffixTemplate1">
+                        <input type="text" nz-input [(ngModel)]="s.name" name="name" placeholder="角色名称">
+                    </nz-input-group>
+                    <ng-template #suffixTemplate1>
+                        <i nz-icon nzType="close" nzTheme="outline" *ngIf="s.name" (click)="clear('name')"></i>
+                    </ng-template>
+                <!-- </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control> -->
+                    <button nz-button nzType="primary" nzSize="large" (click)="load(true)" nzSearch>搜索</button>
+                <!-- </nz-form-control> -->
+            </nz-form-item>
+        </form>
+    </div>
+</div>
+<nz-table #nzTable class="simple-table" [nzData]="list" [nzBordered]="false" [nzSize]="'middle'"
+    [nzFrontPagination]="false" [nzShowPagination]="false">
+    <thead>
+        <tr>
+            <th>角色编号</th>
+            <th>角色名称</th>
+            <th>备注</th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let i of nzTable.data" name="selected" id="selected{{i.node.code}}" (click)="pickRow(i.node)">
+            <td >{{i.node.code}}</td>
+            <td>{{i.node.name}}</td>
+            <td>{{i.node.remark}}</td>
+            <td>
+                <a (click)="edit(i.node)">编辑</a>
+                <nz-divider *ngIf="i.node.type == 0" nzType="vertical"></nz-divider>
+                <a *ngIf="i.node.type == 0" (click)="openPermissionPanel(i.node)">权限</a>
+                <nz-divider *ngIf="i.node.type == 0" nzType="vertical"></nz-divider>
+                <a *ngIf="i.node.type == 0" (click)="openUserPanel(i.node)">用户</a>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>

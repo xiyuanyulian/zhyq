@@ -1,0 +1,15 @@
+<nz-card nzTitle="请选择登录角色">
+    <nz-list [nzDataSource]="users" [nzRenderItem]="item" [nzItemLayout]="'horizontal'" [nzLoading]="loading">
+        <ng-template #item let-item>
+            <nz-list-item>
+                <nz-list-item-meta [nzTitle]="nzTitle"
+                    nzAvatar="./assets/img/head.png"
+                    nzDescription="机构名称：{{item.org_name}}">
+                    <ng-template #nzTitle>
+                        <a (click)="choose(item)">{{ item.fullname }}</a>
+                    </ng-template>
+                </nz-list-item-meta>
+            </nz-list-item>
+        </ng-template>
+    </nz-list>
+</nz-card>

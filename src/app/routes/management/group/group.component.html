@@ -1,0 +1,17 @@
+<div class="content__title">
+    <h1>组织机构管理</h1>
+</div>
+<div nz-row [nzGutter]="16">
+    <div nz-col [nzSpan]="6">
+        <avalon-group-tree (onChangeGroup)="onChangeGroup($event)"></avalon-group-tree>
+    </div>
+    <div nz-col [nzSpan]="18">
+        <nz-card [nzTitle]="group.name">
+            <nz-tabset *ngIf="isShow">
+                <nz-tab nzTitle="资料">
+                    <vol-group-info [g]="g"></vol-group-info>
+                </nz-tab>
+            </nz-tabset>
+        </nz-card>
+    </div>
+</div>

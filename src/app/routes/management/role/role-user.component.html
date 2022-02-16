@@ -1,0 +1,35 @@
+<div nz-row>
+    <div style="padding:10px 0">
+        <button nz-button (click)="pickUser()" [nzType]="'primary'">添加</button>
+    </div>
+</div>
+<nz-table #nzTable class="simple-table" [nzData]="list" [nzLoading]="http.loading" [nzFrontPagination]="false"
+    [nzTotal]="total" [(nzPageIndex)]="s.page" [(nzPageSize)]="s.rows" (nzPageIndexChange)="load()"
+    [nzShowTotal]="showTotal" [nzBordered]="false" [nzSize]="'small'">
+    <thead>
+        <tr>
+            <th>&nbsp;</th>
+            <th>部门</th>
+            <th>姓名</th>
+            <th>状态</th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let e of nzTable.data; let i=index" [style.color]="!e.node.enabled ? 'grey' : ''">
+            <td >{{(s.page-1)*s.rows+i + 1}}</td>
+            <td >
+                <span nz-tooltip [nzTooltipTitle]="e.node.org_name">{{e.node.org_name | slice:0:6}}...</span>
+            </td>
+            <td>{{e.node.fullname}}</td>
+            <td >{{!!e.node.enabled | dict:"enabled"}}</td>
+            <td >
+                <a (click)="remove(e.node)">移除</a>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>
+
+<ng-template #showTotal>
+    共{{total}}条
+</ng-template>

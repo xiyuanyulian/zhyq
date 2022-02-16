@@ -1,0 +1,162 @@
+<div class="org-main">
+    <div class="font-weight-bold mb-md">基础信息</div>
+    <nz-row class="mb-md">
+        <nz-col nzSpan="12">
+            <nz-row class="align-items-center">
+                <nz-col nzSpan="4" class="text-right pr-xs">机构名称：</nz-col>
+                <nz-col nzSpan="20">
+                    <input [(ngModel)]="group.name" name="name" class="dis-box-input" readonly type="text"
+                        placeholder="group.name">
+                </nz-col>
+            </nz-row>
+        </nz-col>
+        <nz-col nzSpan="12">
+            <nz-row class="align-items-center">
+                <nz-col nzSpan="4" class="text-right pr-xs">机构简称：</nz-col>
+                <nz-col nzSpan="20">
+                    <input *ngIf="isEdit" [(ngModel)]="group.simple_name" name="simple_name" class="dis-box-input"
+                        type="text">
+                    <input *ngIf="!isEdit" [(ngModel)]="group.simple_name" name="simple_name" readonly
+                        class="dis-box-input" type="text">
+                </nz-col>
+            </nz-row>
+        </nz-col>
+    </nz-row>
+    <nz-row class="mb-md align-items-center">
+        <nz-col nzSpan="12">
+            <nz-row>
+                <nz-col nzSpan="4" class="text-right pr-xs">机构类型：</nz-col>
+                <nz-col nzSpan="20">{{group.type | format_orgType}}</nz-col>
+            </nz-row>
+        </nz-col>
+        <nz-col nzSpan="12">
+            <nz-row class="align-items-center">
+                <nz-col nzSpan="4" class="text-right pr-xs">行政区划：</nz-col>
+                <nz-col nzSpan="20">
+                    <input [(ngModel)]="group.division_name" readonly name="division_name" class="dis-box-input"
+                        type="text">
+                </nz-col>
+            </nz-row>
+        </nz-col>
+    </nz-row>
+    <nz-row class="mb-md" *ngIf="!showAll">
+        <nz-col nzSpan="12">
+            <nz-row class="align-items-center">
+                <nz-col nzSpan="4" class="text-right pr-xs">联系地址：</nz-col>
+                <nz-col nzSpan="20">
+                    <input [(ngModel)]="group.committee_addr" style="width: 75%;" *ngIf="isEdit" name="committee_addr"
+                        class="dis-box-input" type="text">
+                    <i nz-icon nzType="environment" *ngIf="isEdit" style="margin-left:10px" (click)="openMap()"></i>
+                    <input [(ngModel)]="group.committee_addr" readonly *ngIf="!isEdit" name="committee_addr"
+                        class="dis-box-input" type="text">
+                </nz-col>
+            </nz-row>
+        </nz-col>
+        <nz-col nzSpan="12">
+            <nz-row class="align-items-center">
+                <nz-col nzSpan="4" class="text-right pr-xs">联系方式：</nz-col>
+                <nz-col nzSpan="20">
+                    <input *ngIf="isEdit" [(ngModel)]="group.committee_tel" name="committee_tel" class="dis-box-input"
+                        type="text">
+                    <input *ngIf="!isEdit" [(ngModel)]="group.committee_tel" name="committee_tel" readonly
+                        class="dis-box-input" type="text">
+                </nz-col>
+            </nz-row>
+        </nz-col>
+    </nz-row>
+    <nz-row class="mb-md">
+        <nz-col nzSpan="24">
+            <nz-row class="align-items-center">
+                <nz-col nzSpan="2" class="text-right pr-xs">简介：</nz-col>
+                <nz-col nzSpan="22">
+                    <textarea *ngIf="isEdit" class="org-textfield" [(ngModel)]="group.org_intr" name="org_intr"
+                        placeholder="2000字以内" style='text-indent: 0;'>{{group.org_intr}}
+                        </textarea>
+                    <textarea *ngIf="!isEdit" class="org-textfield" [(ngModel)]="group.org_intr" readonly
+                        name="org_intr" placeholder="2000字以内" style='text-indent: 0;'>{{group.org_intr}}
+                        </textarea>
+                </nz-col>
+            </nz-row>
+        </nz-col>
+    </nz-row>
+    <nz-row class="mb-md align-items-center">
+        <nz-col nzSpan="2" class="text-right pr-xs">封面图：</nz-col>
+        <nz-col nzSpan="22">
+            <nz-upload nzAction="{{uploadPath}}" nzListType="picture-card" nzName="files" [nzFileList]="fileList"
+                [nzShowUploadList]="showUploadList" [nzPreview]="handlePreview" [nzShowButton]="isEdit"
+                (nzChange)="handleChange($event)">
+                <i nz-icon nzType="plus"></i>
+                <div class="ant-upload-text">点击上传</div>
+            </nz-upload>
+            <nz-modal [nzVisible]="previewVisible" [nzContent]="modalContent" [nzFooter]="null"
+                (nzOnCancel)="previewVisible = false">
+                <ng-template #modalContent>
+                    <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
+                </ng-template>
+            </nz-modal>
+        </nz-col>
+    </nz-row>
+</div>
+<div class="org-main" *ngIf="showAll">
+    <div class="font-weight-bold mb-md">{{group.type == 'TOWN' ? '街道办信息' : '居委会信息'}}</div>
+    <nz-row class="mb-md">
+        <nz-col nzSpan="12">
+            <nz-row class="align-items-center">
+                <nz-col nzSpan="4" class="text-right pr-xs">名称：</nz-col>
+                <nz-col nzSpan="20">
+                    <input class="dis-box-input" *ngIf="isEdit" [(ngModel)]="group.committee_name" name="committee_name"
+                        type="text">
+                    <input class="dis-box-input" *ngIf="!isEdit" [(ngModel)]="group.committee_name" readonly
+                        name="committee_name" type="text">
+                </nz-col>
+            </nz-row>
+        </nz-col>
+        <nz-col nzSpan="12">
+            <nz-row class="align-items-center">
+                <nz-col nzSpan="4" class="text-right pr-xs">联系方式：</nz-col>
+                <nz-col nzSpan="20">
+                    <input class="dis-box-input" *ngIf="isEdit" [(ngModel)]="group.committee_tel" name="committee_tel"
+                        type="text">
+                    <input class="dis-box-input" *ngIf="!isEdit" [(ngModel)]="group.committee_tel" readonly
+                        name="committee_tel" type="text">
+                </nz-col>
+            </nz-row>
+        </nz-col>
+    </nz-row>
+    <nz-row class="mb-md align-items-center">
+        <nz-col nzSpan="2" class="text-right pr-xs">地址：</nz-col>
+        <nz-col nzSpan="22">
+            <nz-input-group [nzSuffix]="suffixIconSearch" class="dis-box-input5 body-input" *ngIf="isEdit">
+                <input nz-input [(ngModel)]="group.committee_addr" nzSize="large" name="committee_addr"
+                    maxlength="30" />
+            </nz-input-group>
+            <ng-template #suffixIconSearch>
+                <i nz-icon nzType="environment" (click)="openMap()" class="text-md" style="margin-top: 6px;"></i>
+            </ng-template>
+            <input class="dis-box-input5 body-input" nz-input *ngIf="!isEdit" [(ngModel)]="group.committee_addr"
+                readonly name="committee_addr" maxlength="30" />
+        </nz-col>
+    </nz-row>
+    <nz-row class="mb-md align-items-center">
+        <nz-col nzSpan="2" class="text-right pr-xs">简介：</nz-col>
+        <nz-col nzSpan="22">
+            <textarea class="org-textfield" *ngIf="isEdit" nz-input rows="4" [(ngModel)]="group.committee_intr"
+                name="committee_intr" maxlength="3000" placeholder="2000字以内">
+                        </textarea>
+            <textarea class="org-textfield" *ngIf="!isEdit" nz-input rows="4" [(ngModel)]="group.committee_intr"
+                readonly name="committee_intr" maxlength="3000" placeholder="2000字以内">
+                        </textarea>
+        </nz-col>
+    </nz-row>
+</div>
+<!--居委会信息 end-->
+<div class="fixed-widgets">
+    <nz-avatar [nzSize]="48" nzIcon="edit" (click)="edit()" [class]="isEdit ? 'icon-edit-active' : 'icon-edit'">
+    </nz-avatar>
+</div>
+<div class="org-main" *ngIf="isEdit">
+    <div class="btn-group">
+        <div class="cancel-btn"><a (click)="cancle()" class="cancel-btn">取消</a></div>
+        <div class="store-btn"><a (click)="save()" class="store-btn">保存</a></div>
+    </div>
+</div>

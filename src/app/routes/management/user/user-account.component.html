@@ -1,0 +1,35 @@
+<div nz-row>
+    <div style="padding:10px 0">
+        <button nz-button (click)="edit({id:0})" [nzType]="'primary'">添加</button>
+    </div>
+</div>
+<nz-table #nzTable class="simple-table" [nzData]="list" [nzLoading]="http.loading" [nzBordered]="false"
+    [nzSize]="'small'">
+    <thead>
+        <tr>
+            <th>&nbsp;</th>
+            <th>账号</th>
+            <th>状态</th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let e of nzTable.data; let i=index">
+            <td >{{i + 1}}</td>
+            <td>{{e.identity}}</td>
+            <td >{{!!e.enabled | dict:"enabled"}}</td>
+            <td >
+                <nz-tag *ngIf="e.default">默认</nz-tag>
+            </td>
+            <td >
+                <a (click)="changePwd(e)">修改密码</a>
+                <span nz-table-divider></span>
+                <a (click)="toggleEnabled(e)">{{ e.enabled ? "禁用": "启用" }}</a>
+                <span nz-table-divider></span>
+                <a (click)="remove(e)" *ngIf="!e.default">移除</a>
+                <span *ngIf="!!e.default">移除</span>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>

@@ -1,0 +1,25 @@
+{
+  "schemaPath": "./schema.graphql",
+  "extensions": {
+    "endpoints": {
+      "prod": {
+        "url": "http://localhost/graphql",
+        "subscription": {
+          "url": "ws://localhost/graphql"
+        }
+      },
+      "dev": {
+        "url": "http://localhost/graphql",
+        "headers": {
+          "Authorization": "Bearer ${env:AUTH_TOKEN_ENV}"
+        },
+        "subscription": {
+          "url": "ws://localhost/graphql",
+          "connectionParams": {
+            "Token": "${env:YOUR_APP_TOKEN}"
+          }
+        }
+      }
+    }
+  }
+}

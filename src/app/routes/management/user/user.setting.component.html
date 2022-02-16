@@ -1,0 +1,114 @@
+<div nz-row [nzGutter]="24" class="py-lg">
+    <div nz-col [nzSpan]="6">
+        <nz-card [nzHoverable]="false" nzTitle="设置" class="ant-card__body-nopadding">
+            <a (click)="active=1" class="d-block py-sm px-md" [ngClass]="{'bg-primary-light text-white':active===1}">手机</a>
+            <a (click)="active=2" class="d-block py-sm px-md" [ngClass]="{'bg-primary-light text-white':active===2}">邮箱</a>
+            <a (click)="bindWeChat()" class="d-block py-sm px-md" [ngClass]="{'bg-primary-light text-white':active===4}">其他账号</a>
+            <a (click)="active=3" *ngIf="isZF" class="d-block py-sm px-md" [ngClass]="{'bg-primary-light text-white':active===3}">状态</a>
+        </nz-card>
+    </div>
+    <div nz-col [nzSpan]="18">
+        <nz-card [nzHoverable]="false" *ngIf="active===1">
+            <form #f="ngForm" novalidate nz-form [nzLayout]="'vertical'" [formGroup]="mobileForm">
+                <div nz-row>
+                    <div nz-col nzSpan="12">
+                        <nz-form-item>
+                            <nz-form-label>
+                                <h4>手机号码</h4>
+                            </nz-form-label>
+                            <nz-form-control nzErrorTip="请输入正确的手机号码">
+                                <input nz-input formControlName="mobile" (ngModelChange)="updateMobileValidator()"
+                                    [(ngModel)]="user.mobile" name="mobile" id="mobile" type="text" required>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+
+                <div nz-row>
+                    <div nz-col nzSpan="12">
+                        <nz-form-item>
+                            <nz-form-label>
+                                <h4>验证码</h4>
+                            </nz-form-label>
+                            <nz-form-control nzHasFeedback
+                                [nzErrorTip]="mobileForm.get('captcha').hasError('confirm') ? '请输入正确的验证码' : ''">
+                                <div nz-row [nzGutter]="16">
+                                    <div nz-col nzSpan="16">
+                                        <input nz-input formControlName="captcha" [(ngModel)]="captcha" name="captcha"
+                                            id="captcha" type="text" required>
+                                    </div>
+                                    <div nz-col nzSpan="6">
+                                        <button nz-button (click)="getMobileCaptcha()" [nzType]="'default'"
+                                            [disabled]="second != 0">{{
+                                                    second ? second + 's' : '获取' }}</button>
+                                    </div>
+                                </div>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+
+                <div nz-row [nzGutter]="8">
+                    <div nz-col nzSpan="12">
+                        <button nz-button (click)="updateMobile('mobile')" [nzType]="'primary'"
+                            [disabled]="!f.form.valid || !f.form.dirty">绑定</button>
+                    </div>
+                </div>
+            </form>
+
+        </nz-card>
+        <nz-card [nzHoverable]="false" *ngIf="active===2">
+            <form #e="ngForm" novalidate nz-form [nzLayout]="'vertical'" [formGroup]="emailForm">
+                <div nz-row>
+                    <div nz-col [nzSpan]="12">
+                        <nz-form-item>
+                            <nz-form-label>
+                                <h4>邮箱地址</h4>
+                            </nz-form-label>
+                            <nz-form-control nzErrorTip="请输入正确的邮箱地址">
+                                <input nz-input formControlName="email" (ngModelChange)="updateEmailValidator()"
+                                    [(ngModel)]="user.email" name="email" id="email" type="text" required>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+
+                <div nz-row>
+                    <div nz-col [nzSpan]="12">
+                        <nz-form-item>
+                            <nz-form-label>验证码</nz-form-label>
+                            <nz-form-control nzHasFeedback
+                                [nzErrorTip]="emailForm.get('captcha').hasError('confirm') ? '请输入正确的验证码' : ''">
+                                <div nz-row [nzGutter]="16">
+                                    <div nz-col [nzSpan]="16">
+                                        <input nz-input formControlName="captcha" [(ngModel)]="captcha" name="captcha"
+                                            id="captcha2" type="text" required>
+                                    </div>
+                                    <div nz-col [nzSpan]="6">
+                                        <button nz-button (click)="getEmailCaptcha()" [disabled]="second != 0">{{ second ?
+                                            second + 's' : '获取' }}</button>
+                                    </div>
+                                </div>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+                <div>
+                    <button nz-button (click)="updateEmail()" [nzType]="'primary'"
+                        [disabled]="!e.form.valid || !e.form.dirty">绑定</button>
+                </div>
+            </form>
+        </nz-card>
+        <nz-card [nzHoverable]="false" *ngIf="active===4">
+            <div nz-row [nzGutter]="16">
+                <div nz-col [nzSpan]="16" >
+                    <div>
+                        <div style="width: 100%;text-align: center;font-size: 20px;color: rgb(55, 55, 55);">扫码绑定微信</div>
+                        <iframe frameborder="0" class="weChatCodee" height="320px" width="100%" [src]="url | _safe" target="_top"></iframe>
+                        <div style="width: 100%;text-align: center;font-size: 20px;color: #1890ff;cursor: pointer;" *ngIf="user.unionId" (click)="release()">解除绑定</div>
+                    </div>
+                </div>
+            </div>
+        </nz-card>
+    </div>
+</div>

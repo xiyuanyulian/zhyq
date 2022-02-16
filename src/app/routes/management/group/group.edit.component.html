@@ -1,0 +1,125 @@
+<div class="modal-header">
+    <div class="modal-title">{{ !!i.id ? '编辑' : '添加'}}-组织机构</div>
+</div>
+<form #f="ngForm" nz-form [nzLayout]="'horizontal'">
+
+    <div nz-row>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item nz-row class="mb-sm">
+                <nz-form-label [nzSpan]="8" nzRequired>机构编号</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                    <input nz-input [(ngModel)]="code" disabled name="code" required maxlength="3" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item nz-row class="mb-sm">
+                <nz-form-label [nzSpan]="8" nzRequired>机构类型</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                    <nz-select [(ngModel)]="i.type" name="type" required [nzAllowClear]="false">
+                        <nz-option *ngFor="let t of orgTypes" [nzLabel]="t.name" [nzValue]="t.code">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+
+    <div nz-row>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item nz-row class="mb-sm">
+                <nz-form-label [nzSpan]="8" nzRequired>上级机构</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                    <input nz-input [ngModel]="i.superior_org_name" name="superior_org_name" disabled />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item nz-row class="mb-sm">
+                <nz-form-label [nzSpan]="8" nzRequired>父节点名称</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                    <input nz-input [ngModel]="i.parent_node_name" name="parent_node_name" disabled />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+
+    <div nz-row>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item nz-row class="mb-sm">
+                <nz-form-label [nzSpan]="8" nzRequired>机构名称</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                    <input nz-input [(ngModel)]="i.name" [disabled]="type == 'EDIT' && !canEdit" name="name"
+                        maxlength="30" required />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item nz-row class="mb-sm">
+                <nz-form-label [nzSpan]="8" nzRequired>机构简称</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                    <input nz-input [(ngModel)]="i.simple_name" [disabled]="type == 'EDIT' && !canEdit"
+                        name="simple_name" maxlength="30" required />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+
+    <div nz-row>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item nz-row class="mb-sm">
+                <nz-form-label [nzSpan]="8" nzRequired>行政区划</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                    <nz-tree-select #nzTree name='division_code' required [nzDisabled]="type == 'EDIT' && !canEdit"
+                        [nzShowSearch]="true" [nzDropdownStyle]="{'max-height': '50vh', 'overflow-y': 'auto'}"
+                        [nzNodes]="divisions" nzPlaceHolder="请选择" [(ngModel)]="i.division_code"
+                        (nzTreeClick)="onSelectDivision($event)">
+                    </nz-tree-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item nz-row class="mb-sm">
+                <nz-form-label [nzSpan]="8" nzRequired>显示顺序</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                    <nz-input-number [(ngModel)]="i.sn" name="sn" [disabled]="type == 'EDIT' && !canEdit" [nzMin]='0'
+                        [nzPrecision]="0" [nzStep]="1" [nzMax]="9999" class="width-100">
+                    </nz-input-number>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+
+    <nz-form-item nz-row class="mb-sm">
+        <nz-form-label [nzSpan]="4">备注</nz-form-label>
+        <nz-form-control [nzSpan]="20" [nzLg]="20">
+            <textarea nz-input [(ngModel)]="i.remark" name="remark" rows="4" maxlength="1000"
+                placeholder="1000字以内"></textarea>
+        </nz-form-control>
+    </nz-form-item>
+
+
+    <nz-form-item nz-row class="mb-sm">
+        <nz-form-label [nzSpan]="4">封面图</nz-form-label>
+        <nz-form-control [nzSpan]="20">
+            <nz-upload nzAction="{{uploadPath}}" nzListType="picture-card" nzName="files" [nzFileList]="fileList"
+                [nzShowUploadList]="showUploadList" [nzPreview]="handlePreview" [nzShowButton]="fileList.length < 1"
+                (nzChange)="handleChange($event)">
+                <i nz-icon nzType="plus"></i>
+                <div class="ant-upload-text">点击上传</div>
+            </nz-upload>
+            <nz-modal [nzVisible]="previewVisible" [nzContent]="modalContent" [nzFooter]="null"
+                (nzOnCancel)="previewVisible = false">
+                <ng-template #modalContent>
+                    <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
+                </ng-template>
+            </nz-modal>
+        </nz-form-control>
+    </nz-form-item>
+
+    <div class="modal-footer">
+        <button nz-button (click)="close()">关闭</button>
+        <button nz-button [disabled]="!f.form.valid || (!f.form.dirty && !pic_changed)" (click)="save()"
+            [nzLoading]="http.loading" [nzType]="'primary'">保存</button>
+    </div>
+</form>

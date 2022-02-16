@@ -1,0 +1,7 @@
+<div>
+    <input type="text" style="width: 50%;height: 32px;" nz-input name="newAddress" [(ngModel)]="newAddress" maxlength="30">
+    <button style="margin-left: 8px;" nz-button (click)="codeAddress()">搜索</button>
+    <button style="float: right;" nz-button type="button" (click)="cancle()">关闭</button>
+    <button style="float: right;" nz-button (click)="confirm()" [nzType]="'primary'">确定</button>
+</div>
+<div id="container"></div>

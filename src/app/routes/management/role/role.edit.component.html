@@ -1,0 +1,28 @@
+<div class="modal-header">
+    <div class="modal-title">{{!!i.id ? '编辑' : '添加'}}-角色</div>
+</div>
+<form #f="ngForm" nz-form [nzLayout]="'horizontal'">
+    <nz-form-item class="mb-sm">
+        <nz-form-label [nzSpan]="8">角色编号</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+            <input nz-input [(ngModel)]="i.code" name="code" required disabled="{{!!i.id}}" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item class="mb-sm">
+        <nz-form-label [nzSpan]="8">角色名称</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+            <input nz-input [(ngModel)]="i.name" name="name" maxlength="30" required />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item class="mb-sm">
+        <nz-form-label [nzSpan]="8">备注</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+            <textarea nz-input [(ngModel)]="i.remark" name="remark" maxlength="300" placeholder="300字以内"></textarea>
+        </nz-form-control>
+    </nz-form-item>
+    <div class="modal-footer">
+        <button nz-button (click)="close()">关闭</button>
+        <button nz-button [disabled]="!f.form.valid || !f.form.dirty" (click)="save()" [nzLoading]="http.loading"
+            [nzType]="'primary'">保存</button>
+    </div>
+</form>

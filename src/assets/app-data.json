@@ -1,0 +1,40 @@
+{
+    "app": {
+        "name": "AVALON基础服务平台",
+        "description": "AVALON基础服务平台",
+        "options": {
+            "notification": {
+                "nzPlacement": "bottomRight"
+            }
+        }
+    },
+    "debug": false,
+    "user": {
+        "id": "11b9420ce9f46e583ec2effdb8ed4e82",
+        "uid": "0001",
+        "gender": "1",
+        "user_name": "yuj2",
+        "fullname": "张三",
+        "username": "yuj2",
+        "account": "yuj2",
+        "org_id": "f6931861fd7228b321f594cdc6257923",
+        "org_code": "001042",
+        "org_name": "江门市工商行政管理局",
+        "division_code": "440700",
+        "division_name": "江门市",
+        "is_shizhi": true,
+        "state": "正常",
+        "roles": [{
+            "id": "59bfd39cdcfc680cf9e29c209845aa8b",
+            "role_code": "011003",
+            "role_name": "管理员"
+        }]
+    },
+    "menu": [{
+        "text": "主导航",
+        "i18n": "main_navigation",
+        "group": true,
+        "hideInBreadcrumb": true,
+        "children": []
+    }]
+}

@@ -1,0 +1,136 @@
+<div nz-row [nzGutter]="8" [nzJustify]="'space-between'" class="search-form">
+    <div nz-col>
+        <button nzSize="large" nz-button (click)="editCategory({},modalContent)" [nzType]="'primary'">
+            <i nz-icon nzType="plus"></i>
+            <span>新建分类</span>
+        </button>
+    </div>
+    <div nz-col>
+        <form nz-form [nzLayout]="'inline'">
+            <nz-form-item>
+                <!-- <nz-form-control> -->
+                    <nz-input-group nzSize="large" [nzSuffix]="suffixTemplate">
+                        <input type="text" nz-input [(ngModel)]="s.keyword" name="keyword" placeholder="请输入关键字">
+                    </nz-input-group>
+                    <ng-template #suffixTemplate>
+                        <i nz-icon nzType="close" nzTheme="outline" *ngIf="s.keyword" (click)="clear()"></i>
+                    </ng-template>
+                <!-- </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-control> -->
+                    <button nz-button nzType="primary" nzSize="large" (click)="loadCategory(true)" nzSearch>搜索</button>
+
+                <!-- </nz-form-control> -->
+            </nz-form-item>
+        </form>
+
+    </div>
+</div>
+
+
+<div style="background: #FFF; padding:10px;">
+    <nz-table #nzTable class="simple-table" nzShowSizeChanger [nzFrontPagination]="false" [nzData]="list"
+        [nzTotal]="total" [(nzPageIndex)]="s.page" [(nzPageSize)]="s.rows" (nzPageIndexChange)="pageChange()"
+        (nzPageSizeChange)="pageChange()" [nzBordered]="false" [nzShowTotal]="showTotal" [nzSize]="'middle'">
+        <thead nzSingleSort (nzSortChange)="sort($event)">
+            <tr>
+                <th nzShowSort nzSortKey="category">分类编码</th>
+                <th nzShowSort nzSortKey="cat_name">分类名称</th>
+                <th>备注</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody nz-tbody>
+            <tr nz-tbody-tr *ngFor="let i of nzTable.data;let idx = index">
+                <td >
+                    <ng-container *ngIf="!editCache||  editLine != idx ">
+                        {{i.node.category}}
+                    </ng-container>
+                    <ng-container *ngIf="editCache && editLine == idx">
+                        <input type="text" nz-input [(ngModel)]="i.node.category" size="10px">
+                    </ng-container>
+
+                </td>
+                <td >
+                    <ng-container *ngIf="!editCache||  editLine != idx">
+                        {{i.node.cat_name}}
+                    </ng-container>
+                    <ng-container *ngIf="editCache &&editLine == idx">
+                        <input type="text" nz-input [(ngModel)]="i.node.cat_name" size="10px">
+                    </ng-container>
+                </td>
+                <td >
+                    <ng-container *ngIf="!editCache||  editLine != idx">
+                        <span nz-tooltip [nzTooltipTitle]="i.node.remark">{{i.node.remark | slice:0:10}}</span>
+                    </ng-container>
+                    <ng-container *ngIf="editCache &&editLine == idx">
+                        <input type="text" nz-input [(ngModel)]="i.node.remark" size="10px">
+                    </ng-container>
+
+
+
+                </td>
+                <td >
+                    <span>
+                        <ng-container *ngIf="!editCache ||  editLine != idx">
+                            <a (click)="Edit(true,idx)">编辑</a>
+                        </ng-container>
+                        <ng-container *ngIf="editCache &&editLine == idx">
+                            <a (click)="savaEdit(i.node)">保存 </a>
+                            <a nz-popconfirm [nzPopconfirmTitle]="'是否放弃修改?'" (nzOnConfirm)="Edit(false,idx,1)">放弃</a>
+                        </ng-container>
+
+                        <!-- <a (click)="editCategory(i, modalContent);editIndex=idx;">编辑</a> -->
+                        <nz-divider nzType="vertical"></nz-divider>
+                        <a nz-popconfirm [nzPopconfirmTitle]="'确定要删除吗？'" (nzOnConfirm)="deleteCategory(i.node,idx)">删除</a>
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</div>
+
+<ng-template #showTotal>
+    共{{total}}条
+</ng-template>
+
+<!-- 数据字典分类编辑 -->
+<ng-template #modalContent>
+    <div class="modal-header">
+        <div class="modal-title">{{ !!i.id ? '编辑' : '添加'}}-数据字典分类</div>
+    </div>
+
+    <form #f="ngForm" nz-form [nzLayout]="'horizontal'">
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzRequired>分类编码</nz-form-label>
+
+            <nz-form-control [nzSpan]="12">
+                <input nz-input [(ngModel)]="i.category" name="category" maxlength="50" [disabled]="i.id" required />
+            </nz-form-control>
+
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzRequired>分类名称</nz-form-label>
+            <nz-form-control [nzSpan]="12">
+                <input nz-input [(ngModel)]="i.cat_name" name="cat_name" maxlength="30" required />
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6">备注</nz-form-label>
+            <nz-form-control [nzSpan]="12">
+                <textarea nz-input rows="4" [(ngModel)]="i.remark" name="remark" maxlength="2000"
+                    placeholder="2000字以内"></textarea>
+            </nz-form-control>
+        </nz-form-item>
+
+        <div class="modal-footer">
+            <button nz-button type="button" (click)="close()">关闭</button>
+            <button nz-button [disabled]="!f.form.valid || !f.form.dirty" [nzLoading]="http.loading"
+                [nzType]="'primary'" (click)="save()">保存</button>
+        </div>
+    </form>
+</ng-template>

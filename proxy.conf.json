@@ -1,0 +1,22 @@
+{
+    "/graphql": {
+        "target": "http://localhost",
+        "secure": false
+    },
+    "/api": {
+        "target": "http://localhost",
+        "secure": false
+    },
+    "/upload": {
+        "target": "http://localhost",
+        "secure": false
+    },
+    "/ueditor": {
+        "target": "http://localhost",
+        "secure": false
+    },
+    "/python": {
+        "target": "http://localhost",
+        "secure": false
+    }
+}

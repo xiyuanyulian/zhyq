@@ -1,0 +1,68 @@
+<div class="logo">
+    <a [routerLink]="['/']">
+        <img class="expanded" src="./assets/img/logo-new.png" alt="{{settings.app.name}}" style="max-height:90px;" />
+        <img class="collapsed" src="./assets/img/logo.svg" alt="{{settings.app.name}}" style="max-height:40px;" />
+    </a>
+</div>
+<div class="top-nav-wrap" style="background: url('./assets/img/header-bg.png') no-repeat 30px center;height:63px;">
+    <ul class="top-nav">
+        <!-- Menu -->
+        <li>
+            <div class="item" (click)="toggleCollapsedSidebar()">
+                <i nz-icon [nzType]="settings.layout.collapsed ? 'menu-unfold' : 'menu-fold'"></i>
+            </div>
+        </li>
+        <!-- Search Button -->
+        <!-- <li class="header-search__btn" (click)="searchToggleChange()">
+            <div class="item">
+                <i nz-icon nzType="search"></i>
+            </div>
+        </li> -->
+    </ul>
+    <!-- <header-search class="header-search" [toggleChange]="searchToggleStatus"></header-search> -->
+    <ul class="top-nav">
+        <!-- <li *ngIf="showOrg">
+            <header-choose-org></header-choose-org>
+        </li> -->
+        <!-- Lock Page -->
+        <li class="hidden-xs">
+            <div class="item" [routerLink]="['/lock']">
+                <i nz-icon [nzType]="'lock'" nzTheme="outline"></i>
+            </div>
+        </li>
+        <!-- Notify -->
+        <!-- <li>
+            <header-bulletin></header-bulletin>
+        </li> -->
+        <!-- Task -->
+        <!-- <li class="hidden-xs">
+            <header-issue></header-issue>
+        </li> -->
+        <!-- App Icons -->
+        <!-- <li class="hidden-xs">
+            <header-icon></header-icon>
+        </li> -->
+        <!-- Settings -->
+        <li class="hidden-xs">
+            <div class="item" nz-dropdown [nzDropdownMenu]="menu" nzTrigger="click" nzPlacement="bottomRight">
+                <i nz-icon nzType="setting"></i>
+            </div>
+            <nz-dropdown-menu #menu="nzDropdownMenu">
+                <ul nz-menu style="width: 200px;">
+                    <li nz-menu-item>
+                        <header-fullscreen></header-fullscreen>
+                    </li>
+                    <li nz-menu-item>
+                        <header-storage></header-storage>
+                    </li>
+                    <!-- <li nz-menu-item>
+                        <header-i18n></header-i18n>
+                    </li> -->
+                </ul>
+            </nz-dropdown-menu>
+        </li>
+        <!-- <li class="hidden-xs">
+            <header-user></header-user>
+        </li> -->
+    </ul>
+</div>

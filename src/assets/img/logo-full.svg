@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="图层_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="960px" height="560px" viewBox="0 0 960 560" enable-background="new 0 0 960 560" xml:space="preserve">
+<g>
+	<circle fill="#FFB400" cx="43.38" cy="234.316" r="10.312"/>
+	<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="2.1567" y1="287.55" x2="182.0278" y2="287.55">
+		<stop  offset="0" style="stop-color:#FFE100"/>
+		<stop  offset="1" style="stop-color:#EE3327"/>
+	</linearGradient>
+	<path fill="url(#SVGID_1_)" d="M27.353,273.655c1.013-26.175,22.519-29.239,33.346-25.526c8.239,2.826,14.399,7.37,14.399,7.37
+		s14.794-33.623,48.417-46.4s58.127,6.072,58.504,27.571c0.323,18.432-9.224,58.168-52.358,88.765
+		c-43.132,30.597-81.412,44.614-98.946,44.719c-13.557,0.082-33.96-7.396-27.235-42.7c6.725-35.305,7.061-22.191,7.061-22.191
+		s0.672,37.994,20.847,39.675c20.174,1.681,56.15-9.078,81.032-37.994c24.881-28.916,26.347-41.72,20.402-49.6
+		c-12.552-16.638-30.034,2.099-33.516,5.33c-5.199,4.826-17.82,22.079-17.82,22.079s-22.858-16.649-30.705-5.89
+		c-7.846,10.76,2.91,26.704,7.168,32.452c9.128,12.321,17.82,18.492,17.82,18.492l-13.113,5.717
+		C62.657,335.522,26.245,302.311,27.353,273.655z"/>
+	<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="98.2983" y1="300.2375" x2="302.3911" y2="300.2375">
+		<stop  offset="0" style="stop-color:#FFE100"/>
+		<stop  offset="0.9951" style="stop-color:#2186F4"/>
+	</linearGradient>
+	<path fill="url(#SVGID_2_)" d="M98.298,354.014l10.759-8.742c0,0,42.339,8.406,73.286-30.934
+		c30.947-39.339,36.663-49.426,55.492-60.521c18.829-11.095,32.614-13.113,32.614-13.113s1.682,9.078,15.467,14.458
+		c13.786,5.38,16.476,6.725,16.476,6.725s-18.829-3.699-53.797,23.873c-34.968,27.571-59.849,49.426-69.936,56.823
+		s-21.855,15.13-35.641,16.475C129.231,360.403,117.463,360.403,98.298,354.014z"/>
+	<circle fill="#FFB400" cx="125.869" cy="190.605" r="12.777"/>
+</g>
+<g>
+	<text transform="matrix(1 0 0 1 858.542 349.7883)" fill="#FFFFFF" font-family="'STKaiti'" font-size="181.5321"> </text>
+	<text transform="matrix(1 0 0 1 300.3911 335.5442)" fill="#FFFFFF" font-family="'MicrosoftYaHei'" font-size="162.8813">AVALON基础服务平台</text>
+	
+		<text transform="matrix(1 0 0 1 300.3911 335.5442)" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="2" stroke-miterlimit="10" font-family="'MicrosoftYaHei'" font-size="162.8813">AVALON基础服务平台</text>
+	<text transform="matrix(1 0 0 1 788.9492 354.8235)" fill="#FFFFFF" font-family="'STKaiti'" font-size="162.8813"> </text>
+</g>
+</svg>

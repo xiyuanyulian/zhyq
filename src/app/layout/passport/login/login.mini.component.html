@@ -1,0 +1,69 @@
+<form nz-form [formGroup]="form" (ngSubmit)="submit()" role="form">
+    <nz-tabset [nzAnimated]="false" class="tabs" (nzSelectChange)="switch($event)">
+        <nz-tab nzTitle="账户密码登录">
+            <nz-alert *ngIf="error" [nzType]="'error'" [nzMessage]="error" [nzShowIcon]="true" class="mb-lg"></nz-alert>
+            <nz-form-item>
+                <nz-form-control nzErrorTip="请输入正确用户名、手机号或邮箱！">
+                    <nz-input-group [nzPrefixIcon]="userIcon">
+                        <input nz-input formControlName="userName" placeholder="请输入用户名、手机号或邮箱">
+                    </nz-input-group>
+                    <ng-template #userIcon><i nz-icon nzType="user"></i></ng-template>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control nzErrorTip="请输入密码！">
+                    <nz-input-group [nzPrefixIcon]="lockIcon">
+                        <input nz-input type="password" formControlName="password" placeholder="请输入密码">
+                    </nz-input-group>
+                    <ng-template #lockIcon><i nz-icon nzType="lock"></i></ng-template>
+                </nz-form-control>
+            </nz-form-item>
+        </nz-tab>
+        <nz-tab nzTitle="手机号登录">
+            <nz-form-item>
+                <nz-alert *ngIf="error" [nzType]="'error'" [nzMessage]="error" [nzShowIcon]="true" class="mb-lg"></nz-alert>
+                <nz-form-control nzErrorTip="请输入手机号码！">
+                    <nz-input-group [nzPrefixIcon]="mobileIcon">
+                        <input nz-input formControlName="mobile" placeholder="手机号">
+                    </nz-input-group>
+                    <ng-template #mobileIcon><i nz-icon nzType="mobile"></i></ng-template>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control>
+                    <div nz-row [nzGutter]="8">
+                        <div nz-col [nzSpan]="16">
+                            <nz-input-group [nzPrefixIcon]="barcodeIcon" style="vertical-align: top">
+                                <input nz-input formControlName="captcha" placeholder="验证码">
+                            </nz-input-group>
+                            <ng-template #barcodeIcon><i nz-icon nzType="barcode"></i></ng-template>
+                        </div>
+                        <div nz-col [nzSpan]="8">
+                            <nz-input-group>
+                                <button nz-button (click)="getCaptcha()" [disabled]="count != 0" class="ant-btn__block">{{ count ? count + 's' : '获取' }}</button>
+                            </nz-input-group>
+                        </div>
+                    </div>
+                </nz-form-control>
+            </nz-form-item>
+        </nz-tab>
+    </nz-tabset>
+    <nz-form-item>
+        <nz-col [nzSpan]="12">
+            <label nz-checkbox formControlName="remember">自动登录</label>
+        </nz-col>
+        <nz-col [nzSpan]="12" >
+            <a class="forgot" (click)="msg.error('请联系管理员')">忘记密码？</a>
+        </nz-col>
+    </nz-form-item>
+    <nz-form-item>
+        <button nz-button type="submit" nzType="primary" nzSize="large" [nzLoading]="loading" class="ant-btn__block">登录</button>
+    </nz-form-item>
+</form>
+<!-- <div class="other">
+    其他登录方式
+    <i title="in fact Auth0 via window" (click)="open('auth0', 'window')" class="alipay-circle" class="icon"></i>
+    <i title="in fact Github via redirect" (click)="open('taobao')" class="taobao-circle" class="icon"></i>
+    <i title="微博" (click)="open('weibo', 'window')" class="weibo-circle" class="icon"></i>
+    <a class="register" routerLink="/passport/register">注册账户</a>
+</div> -->

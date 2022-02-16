@@ -1,0 +1,125 @@
+<div class="content__title">
+    <h1>数据字典管理</h1>
+</div>
+
+<div>
+    <div nz-row [nzGutter]="8" [nzJustify]="'space-between'" class="search-form">
+        <div nz-col>
+            <button nzSize="large"  nz-button (click)="editDictionary({}, modalContent)" [nzType]="'primary'">
+                <i nz-icon nzType="plus"></i>
+                <span>新建</span>
+            </button> &nbsp;&nbsp;
+            <button nzSize="large"  nz-button (click)="showDictionaryCategory()" [nzType]="'primary'">
+                <span>分类管理</span>
+            </button>
+
+        </div>
+        <div nz-col>
+            <form nz-form [nzLayout]="'inline'">
+                <nz-form-item>
+                    <!-- <nz-form-control> -->
+                        <nz-input-group nzSize="large"  [nzSuffix]="suffixTemplate">
+                            <input type="text" nz-input [(ngModel)]="s.search_param" name="search_param"
+                                placeholder="请输入关键字">
+                        </nz-input-group>
+                        <ng-template #suffixTemplate>
+                            <i nz-icon nzType="close" nzTheme="outline" *ngIf="s.search_param" (click)="clear()"></i>
+                        </ng-template>
+                    <!-- </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item>
+                    <nz-form-control> -->
+                        <button nz-button nzType="primary" nzSize="large" (click)="load(true)" nzSearch>搜索</button>
+                    <!-- </nz-form-control> -->
+                </nz-form-item>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div style="background: #FFF; padding:10px;">
+    <div nz-row [nzJustify]="'space-between'">
+        <div nz-col [nzSpan]="24">
+            <nz-table #nzTable nzShowSizeChanger [nzFrontPagination]="false" [nzData]="list" [nzTotal]="total"
+                [(nzPageIndex)]="s.page" [(nzPageSize)]="s.rows" [nzShowTotal]="showTotal"
+                (nzPageIndexChange)="loadData()" (nzPageSizeChange)="loadData(true)" [nzBordered]="false"
+                [nzSize]="'middle'">
+                <thead nzSingleSort (nzSortChange)="sort($event)">
+                    <tr>
+                        <th  nzShowSort nzSortKey="cat_name">分类名称</th>
+                        <th  nzShowSort nzSortKey="category">分类编码</th>
+                        <th  nzShowSort nzSortKey="name">名称</th>
+                        <th  nzShowSort nzSortKey="code">编码</th>
+                        <th >备注</th>
+                        <th >操作</th>
+                    </tr>
+                </thead>
+                <tbody nz-tbody>
+                    <tr nz-tbody-tr *ngFor="let i of nzTable.data;let idx = index">
+                        <td >{{i.node.cat_name}}</td>
+                        <td >{{i.node.category}}</td>
+                        <td >{{i.node.name}}</td>
+                        <td >{{i.node.code}}</td>
+                        <td >
+                            <span nz-tooltip [nzTooltipTitle]="i.node.remark">{{i.node.remark | slice:0:10}}</span>
+                        </td>
+                        <td >
+                            <span>
+                                <a (click)="editDictionary(i.node,modalContent);editIndex=idx">编辑</a>
+                                <nz-divider nzType="vertical"></nz-divider>
+                                <a nz-popconfirm [nzPopconfirmTitle]="'确定要删除吗？'"
+                                    (nzOnConfirm)="delete(i.node, idx)">删除</a>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+    </div>
+</div>
+
+<ng-template #showTotal>
+    共{{total}}条
+</ng-template>
+
+<ng-template #modalContent>
+    <div class="modal-header">
+        <div class="modal-title">{{ !!item.id ? '编辑' : '添加'}}-数据字典</div>
+    </div>
+
+    <form #f="ngForm" (ngSubmit)="saveDictionary()" nz-form [nzLayout]="'horizontal'">
+
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzRequired>分类</nz-form-label>
+            <nz-form-control [nzSpan]="12">
+                <nz-select nzAllowClear [nzPlaceHolder]="'请选择分类'" [(ngModel)]="item.category" name="category"
+                    nzShowSearch [disabled]="item.id" required>
+                    <nz-option *ngFor="let option of searchOptions" [nzLabel]="option.cat_name"
+                        [nzValue]="option.category">
+                    </nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzRequired>编码</nz-form-label>
+            <nz-form-control [nzSpan]="12">
+                <input nz-input [(ngModel)]="item.code" name="code" maxlength="50" required />
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzRequired>名称</nz-form-label>
+            <nz-form-control [nzSpan]="12">
+                <input nz-input [(ngModel)]="item.name" name="name" maxlength="30" required />
+            </nz-form-control>
+        </nz-form-item>
+
+        <div class="modal-footer">
+            <button nz-button type="button" (click)="close()">关闭</button>
+            <button nz-button [disabled]="!f.form.valid || !f.form.dirty " [nzLoading]="http.loading"
+                [nzType]="'primary'">保存</button>
+        </div>
+    </form>
+</ng-template>

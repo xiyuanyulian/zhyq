@@ -1,0 +1,47 @@
+<div class="content__title">
+    <h1>登录日志</h1>
+</div>
+<div nz-row [nzGutter]="8" [nzJustify]="'space-between'" class="search-form">
+    <div nz-col>
+    </div>
+    <div nz-col>
+        <form nz-form [nzLayout]="'inline'">
+            <nz-form-item>
+                <!-- <nz-form-control> -->
+                    <nz-input-group nzSize="large" [nzSuffix]="suffixTemplate">
+                        <input type="text" nz-input [(ngModel)]="s.login_user_name" name="login_user_name"
+                            placeholder="用户姓名">
+                    </nz-input-group>
+                    <ng-template #suffixTemplate>
+                        <i nz-icon nzType="close" nzTheme="outline" *ngIf="s.login_user_name" (click)="clear()"></i>
+                    </ng-template>
+                <!-- </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control> -->
+                    <button nz-button nzType="primary" nzSize="large" (click)="load(true)" nzSearch>搜索</button>
+                <!-- </nz-form-control> -->
+            </nz-form-item>
+        </form>
+    </div>
+</div>
+<nz-table #nzTable class="simple-table" [nzData]="list" [nzFrontPagination]="false" [nzTotal]="s.total"
+    [(nzPageIndex)]="s.page" [(nzPageSize)]="s.rows" (nzPageIndexChange)="load()" [nzBordered]="false"
+    [nzSize]="'middle'">
+    <thead>
+        <tr>
+            <th>登录用户</th>
+            <th>登录时间</th>
+            <th>用户部门</th>
+            <th>登录ip</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let i of nzTable.data">
+            <td >{{i.node.login_user_name}}</td>
+            <td>{{i.node.login_at | _date}}</td>
+            <td>{{i.node.login_user_org_name}}</td>
+            <td>{{i.node.login_ip}}</td>
+        </tr>
+    </tbody>
+</nz-table>

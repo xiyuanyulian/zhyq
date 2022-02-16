@@ -1,0 +1,13 @@
+<div class="content__title">
+    <h1>机构档案</h1>
+</div>
+<div nz-row [nzGutter]="16">
+    <div nz-col [nzSpan]="6">
+        <avalon-org-tree (onChangeOrg)="onChangeOrg($event)"></avalon-org-tree>
+    </div>
+    <div nz-col [nzSpan]="18">
+        <nz-card nzTitle="机构档案" *ngIf="show">
+            <vol-group-detail *ngIf="show" [g]="g"></vol-group-detail>
+        </nz-card>
+    </div>
+</div>

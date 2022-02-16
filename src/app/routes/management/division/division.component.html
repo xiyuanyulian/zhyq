@@ -1,0 +1,11 @@
+<div class="content__title">
+    <h1>行政区划管理</h1>
+</div>
+<div nz-row [nzGutter]="16">
+    <div nz-col [nzSpan]="6">
+        <rioe-division-tree (onChangeDivision)="onChangeDivision($event)" [r]="saveDivisionSubject"></rioe-division-tree>
+    </div>
+    <div nz-col [nzSpan]="18">
+        <rieo-division-edit [d]="divisionSubject" (onSaveDivision)="onSaveDivision($event)"></rieo-division-edit>
+    </div>
+</div>

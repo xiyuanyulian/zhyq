@@ -1,0 +1,151 @@
+<div nz-row [nzGutter]="8" [nzJustify]="'space-between'" class="search-form">
+    <div nz-col>
+        <button  nzSize="large"  nz-button (click)="edit({uid:'', enabled: true})" [nzType]="'primary'">
+            <i nz-icon nzType="plus"></i>
+            <span>新建</span>
+        </button>
+        <!-- <button nz-button down-file http-url="{{downloadFile.exprotUrl}}" file-name="用户-导出数据.xlsx">
+            <i nz-icon nzType="download"></i>
+            导出数据
+        </button> -->
+    </div>
+    <div nz-col>
+        <form nz-form [nzLayout]="'inline'">
+            <nz-form-item>
+                <nz-form-control>
+                    <nz-tree-select  nzSize="large"  style="width: 300px" [nzDropdownMatchSelectWidth]="false" [nzNodes]="nodes"
+                        nzShowSearch [nzDropdownStyle]="{ 'max-height': '300px' }" [nzDefaultExpandAll]="true"
+                        [nzAllowClear]="false" [nzMultiple]="true" [nzMaxTagCount]="2" 
+                        [(ngModel)]="s.org_ids" *ngIf="org_type == 'TOWN'"  name="org_ids" (ngModelChange)="onChange($event)">
+                    </nz-tree-select>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control>
+                    <nz-select  nzSize="large" [(ngModel)]="s.enabled" (ngModelChange)="load(true)" name="enabled"
+                        [nzAllowClear]="false">
+                        <nz-option nzValue="" nzLabel="全部"></nz-option>
+                        <nz-option nzValue="false" nzLabel="禁用"></nz-option>
+                        <nz-option nzValue="true" nzLabel="启用"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item *ngIf="hasAuth">
+                <nz-form-control>
+                    <nz-select  nzSize="large" [nzDropdownMatchSelectWidth]="false" [(ngModel)]="s.role_id" (ngModelChange)="load(true)"
+                        name="role_id" [nzAllowClear]="false">
+                        <nz-option nzValue="" nzLabel="全部角色"></nz-option>
+                        <nz-option nzValue="SUPER" nzLabel="系统管理员"></nz-option>
+                        <nz-option nzValue="OPER" nzLabel="运维"></nz-option>
+                        <nz-option nzValue="DEPART" nzLabel="机构管理员"></nz-option>
+                        <nz-option nzValue="PERSONNEL" nzLabel="机构工作人员"></nz-option>
+                        <nz-option nzValue="BUSINESS" nzLabel="商家"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <!-- <nz-form-control>
+                    <nz-input-group [nzSuffix]="suffixTemplate">
+                        <input type="text" nz-input [(ngModel)]="s.keyword" name="keyword" placeholder="请输入关键字">
+                    </nz-input-group>
+                    <ng-template #suffixTemplate>
+                        <i nz-icon nzType="close" nzTheme="outline" *ngIf="s.keyword" (click)="clear()"></i>
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control>
+                    <button nz-button (click)="search()"><i nz-icon nzType="search"></i>搜索</button>
+                </nz-form-control> -->
+                <nz-input-group nzSize="large" [nzSuffix]="clearIcon">
+                    <input type="text" [(ngModel)]="s.keyword" name="keyword" (keyup.enter)="load(true)" nz-input
+                        placeholder="请输入关键字">
+                </nz-input-group>
+                <button nz-button nzType="primary" nzSize="large" (click)="load(true)" nzSearch>搜索</button>
+                <ng-template #clearIcon>
+                    <i nz-icon nzTheme="outline" nzType="close" *ngIf="s.keyword" (click)="clear()"></i>
+                </ng-template>
+            </nz-form-item>
+        </form>
+    </div>
+</div>
+
+<nz-table #nzTable class="simple-table fixed-table" [nzData]="list" [nzFrontPagination]="false" [nzTotal]="total"
+    [(nzPageIndex)]="s.page" [(nzPageSize)]="s.rows" [nzShowTotal]="showTotal" (nzPageIndexChange)="load()"
+    [nzBordered]="false" [nzSize]="'middle'">
+    <thead>
+        <tr>
+            <!-- <th>编号</th> -->
+            <th>姓名</th>
+            <th>用户名</th>
+            <th>机构</th>
+            <th>角色</th>
+            <th>手机</th>
+            <!-- <th>邮箱</th> -->
+            <th>创建时间</th>
+            <th>状态</th>
+            <th style="width: 160px;">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let i of nzTable.data" name="selected" id="selected{{i.node.uid}}"
+            [style.color]="!i.node.enabled ? 'red' : ''" (click)="pickRow(i.node)">
+            <!-- <td>
+                        <span nz-tooltip [nzTitle]="i.node.uid" class="nowrap-cell">{{i.node.uid}}</span>
+                    </td> -->
+            <td>{{i.node.fullname}}</td>
+            <td>{{i.node.username}}</td>
+            <td>
+                <span nz-tooltip [nzTooltipTitle]="i.node.org_name" class="nowrap-cell">{{i.node.org_name}}</span>
+            </td>
+            <td>
+                <span nz-tooltip [nzTooltipTitle]="i.node.role_name" class="nowrap-cell">{{i.node.role_name}}</span>
+            </td>
+            <td>{{i.node.mobile}}</td>
+            <!-- <td>{{i.node.email}}</td> -->
+            <td>{{i.node.created_at | _date}}</td>
+            <td >{{!!i.node.enabled | dict:"enabled"}}</td>
+            <td>
+                <a (click)="edit(i.node)">编辑</a>
+                <ng-container *ngIf="!i.node.enabled">
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a (click)="toggleEnabled(i.node)">{{ i.node.enabled ? "禁用": "启用" }}</a>
+                </ng-container>
+                <ng-container *ngIf="i.node.enabled">
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a nz-popconfirm [nzPopconfirmTitle]="'确定要禁用这个用户吗？'" (nzOnConfirm)="toggleEnabled(i.node)">禁用</a>
+                </ng-container>
+                <nz-divider nzType="vertical"></nz-divider>
+                <a nz-dropdown [nzDropdownMenu]="menu">更多<i nz-icon nzType="down"></i></a>
+                <nz-dropdown-menu #menu="nzDropdownMenu">
+                    <ul nz-menu>
+                        <li nz-menu-item (click)="showPasswordDialog(i.node)">修改密码</li>
+                        <li nz-menu-item>
+                            <a nz-popconfirm nzPopconfirmTitle="确定要删除吗？" (nzOnConfirm)="delete(i.node)">删除</a>
+                        </li>
+                        <li nz-menu-item *ngIf="showRole" (click)="showRolePanel(i.node)">角色</li>
+                        <li nz-menu-item *ngIf="showRole" (click)="showPermissionPanel(i.node)">权限清单</li>
+                    </ul>
+                </nz-dropdown-menu>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>
+
+<ng-template #showTotal>
+    共{{total}}条
+</ng-template>
+
+<nz-modal [nzVisible]="showPwdDialog" [nzTitle]="'修改密码'" [nzContent]="pwdContent" (nzOnCancel)="handleCancel($event)"
+    (nzOnOk)="handleOk($event)">
+    <ng-template #pwdContent>
+        <form nz-form #pwdForm="ngForm">
+            <nz-form-item>
+                <nz-form-control>
+                    <input type="password" nz-input [(ngModel)]="password" name="password" placeholder="请输入新的密码"
+                        [nzSize]="'large'" />
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </ng-template>
+</nz-modal>

@@ -1,0 +1,20 @@
+<nz-card nzTitle="机构角色" [nzBordered]="false">
+    <nz-table #nzTable class="simple-table" [nzData]="list" [nzShowPagination]="false" nzSize="middle" (nzCurrentPageDataChange)="_displayDataChange($event)">
+        <thead>
+            <tr>
+                <th nzShowCheckbox [(nzChecked)]="_allChecked" [nzIndeterminate]="_indeterminate" (nzCheckedChange)="_checkAll($event)" ></th>
+                <th >编号</th>
+                <th >名称</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let i of nzTable.data">
+                <td nzShowCheckbox [(nzChecked)]="i.checked" (nzCheckedChange)="toggleRole(i)" ></td>
+                <td >{{i.code}}</td>
+                <td>
+                    <span nz-tooltip [nzTooltipTitle]="i.remark">{{i.name}}</span>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</nz-card>

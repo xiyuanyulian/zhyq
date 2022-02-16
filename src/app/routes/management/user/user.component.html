@@ -1,0 +1,30 @@
+<div class="content__title">
+    <h1>用户管理</h1>
+</div>
+<div nz-row [nzGutter]="8">
+    <div nz-col class="gutter-row" [nzSpan]="mainPanelSize">
+        <avalon-user-list (onUserChanged)="changeUser($event)" (onOpenPanel)="openSettingPanel($event)"></avalon-user-list>
+    </div>
+
+    <div nz-col class="gutter-row" [nzSpan]="settingPanelSize" *ngIf="showSettingPanel">
+        <div style="background: #FFF; padding:10px;">
+            <div nz-row nzType="flex" nzJustify="space-between">
+                <span>
+                    <i nz-icon nzType="setting"></i> &nbsp;
+                    <strong>{{user.fullname}}设置</strong>
+                </span>
+                <button nz-button class="panel-close-btn" nzSize="small" (click)="openSettingPanel()">
+                    <i nz-icon nzType="close"></i>
+                </button>
+            </div>
+            <nz-tabset [(nzSelectedIndex)]="tabIdx">
+                <nz-tab nzTitle="角色">
+                    <avalon-user-role [user]="$user"></avalon-user-role>
+                </nz-tab>
+                <nz-tab nzTitle="权限清单">
+                    <avalon-user-permission [user]="$user"></avalon-user-permission>
+                </nz-tab>
+            </nz-tabset>
+        </div>
+    </div>
+</div>

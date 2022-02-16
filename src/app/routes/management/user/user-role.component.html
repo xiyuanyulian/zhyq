@@ -1,0 +1,26 @@
+<nz-table #nzTable class="simple-table" [nzData]="list" [nzTotal]="total" [nzShowTotal]="showTotal"
+    [(nzPageIndex)]="s.page" [(nzPageSize)]="s.rows" [nzFrontPagination]="false" (nzPageIndexChange)="load()"
+    (nzPageSizeChange)="load(true)" [nzShowPagination]="true" [nzBordered]="false" [nzShowSizeChanger]="true"
+    [nzSize]="'middle'">
+    <thead>
+        <tr>
+            <th> &nbsp;</th>
+            <th>角色编号</th>
+            <th>角色名称</th>
+            <th>备注</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let i of nzTable.data">
+            <td nzShowCheckbox [(nzChecked)]="i.node.checked" [nzDisabled]="i.node.disabled"
+                (nzCheckedChange)="toggleRole(i.node)" ></td>
+            <td >{{i.node.code}}</td>
+            <td>{{i.node.name}}</td>
+            <td>{{i.node.remark}}</td>
+        </tr>
+    </tbody>
+</nz-table>
+
+<ng-template #showTotal>
+    共{{total}}条
+</ng-template>

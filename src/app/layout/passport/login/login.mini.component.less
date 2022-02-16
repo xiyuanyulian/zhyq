@@ -1,0 +1,49 @@
+@import '../../../../delon/theme/styles/default';
+
+:host {
+    display: block;
+    margin: 0 auto;
+
+	::ng-deep {
+        .ant-tabs .ant-tabs-bar {
+          border-bottom: 0;
+          margin-bottom: 24px;
+          text-align: center;
+        }
+        .ant-tabs-tab {
+            font-size: 1em;
+            line-height: 16px;
+        }
+        .ant-input-affix-wrapper .ant-input:not(:first-child) {
+            padding-left: 34px;
+        }
+
+        .icon {
+            font-size: 24px;
+            color: rgba(0, 0, 0, 0.2);
+            margin-left: 16px;
+            vertical-align: middle;
+            cursor: pointer;
+            transition: color .3s;
+
+            &:hover {
+                color: @primary-color;
+            }
+        }
+
+        .other {
+            text-align: left;
+            margin: 24px 0;
+            line-height: 22px;
+
+            nz-tooltip {
+                vertical-align: middle;
+            }
+
+            .register {
+                margin: 16px 0;
+                float: right;
+            }
+        }
+	}
+}

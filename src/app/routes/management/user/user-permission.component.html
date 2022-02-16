@@ -1,0 +1,13 @@
+<div style="padding:10px 0">
+    <button nz-button [nzType]="'default'" (click)="reloadTree()">
+        <i nz-icon nzType="reload"></i>
+    </button>
+    <!-- <button nz-button [nzType]="'default'" (click)="expandTree()">
+        <i nz-icon nzType="menu-unfold"></i>
+    </button>
+    <button nz-button [nzType]="'default'" (click)="collapseTree()">
+        <i nz-icon nzType="menu-fold"></i>
+    </button> -->
+    <nz-tree #tree [nzData]="menus" [nzShowLine]="true" [nzCheckable]="true" [nzExpandAll]="false">
+    </nz-tree>
+</div>

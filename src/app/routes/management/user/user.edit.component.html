@@ -1,0 +1,85 @@
+<div class="modal-header">
+    <div class="modal-title">{{u.uid ? '编辑' : '添加'}}-用户</div>
+</div>
+<form novalidate [formGroup]="validateForm" nz-form>
+    <nz-form-item nz-row class="mb-sm">
+        <nz-form-label [nzSpan]="4">编号</nz-form-label>
+        <nz-form-control [nzSpan]="20" [nzLg]="8">
+            <input nz-input [(ngModel)]="u.uid" formControlName="uid" readonly="true" />
+        </nz-form-control>
+        <div nz-col [nzSpan]="4"></div>
+        <nz-form-control [nzSpan]="20" [nzLg]="8">
+            <label nz-checkbox [(ngModel)]="u.enabled" formControlName="enabled">
+                <span>启用</span>
+            </label>
+        </nz-form-control>
+    </nz-form-item>
+
+    <div nz-row>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item nz-row class="mb-sm">
+                <nz-form-label [nzSpan]="8" nzRequired>姓名</nz-form-label>
+                <nz-form-control [nzSpan]="16" nzErrorTip="请输入姓名！">
+                    <input nz-input [(ngModel)]="u.fullname" formControlName="fullname" maxlength="30" id="fullname" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item nz-row class="mb-sm">
+                <nz-form-label [nzSpan]="8" nzRequired>账号</nz-form-label>
+                <nz-form-control [nzSpan]="16" nzHasFeedback
+                    [nzErrorTip]="validateForm.get('username').hasError('required') ? '请输入账号'
+            : validateForm.get('username').hasError('confirm') ? '账号已存在' : validateForm.get('username').hasError('pattern') ? '请输入字母、数字、下划线！' : ''">
+                    <input nz-input [(ngModel)]="u.username" formControlName="username" id="username"
+                        readonly="{{u.uid}}" minlength="1" maxlength="16" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+
+    <nz-form-item nz-row class="mb-sm">
+        <nz-form-label [nzSpan]="4" nzRequired>性别</nz-form-label>
+        <nz-form-control [nzSpan]="20" [nzLg]="8" nzErrorTip="请选择性别">
+            <nz-select [(ngModel)]="u.gender" formControlName="gender" id="gender" [nzAllowClear]="false">
+                <nz-option *ngFor="let g of genders" [nzLabel]="g.name" [nzValue]="g.code"></nz-option>
+            </nz-select>
+        </nz-form-control>
+        <nz-form-label [nzSpan]="4">出生日期</nz-form-label>
+        <nz-form-control [nzSpan]="20" [nzLg]="8">
+            <nz-date-picker [(ngModel)]="u.birthdate" formControlName="birthdate" placeholder="'请选择'" class="width-100"></nz-date-picker>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-row class="mb-sm">
+        <nz-form-label [nzSpan]="4">邮箱</nz-form-label>
+        <nz-form-control [nzSpan]="20" [nzLg]="8">
+            <input nz-input [(ngModel)]="u.email" formControlName="email" maxlength="50" />
+        </nz-form-control>
+        <nz-form-label [nzSpan]="4">手机</nz-form-label>
+        <nz-form-control [nzSpan]="20" [nzLg]="8">
+            <input nz-input [(ngModel)]="u.mobile" formControlName="mobile" maxlength="30" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-row class="mb-sm">
+        <nz-form-label [nzSpan]="4" nzRequired>部门</nz-form-label>
+        <nz-form-control *ngIf="hasAuth" [nzSpan]="20" [nzLg]="8" nzErrorTip="请选择部门">
+            <nz-tree-select #nzTree formControlName='gid' [nzShowSearch]="true"
+                [nzDropdownStyle]="{'max-height': '50vh', 'overflow-y': 'auto'}" [nzNodes]="groups" nzPlaceHolder="请选择"
+                [(ngModel)]="u.gid" (nzTreeClick)="onSelectGroup($event)">
+            </nz-tree-select>
+        </nz-form-control>
+        <nz-form-control *ngIf="!hasAuth" [nzSpan]="20" [nzLg]="8">
+            {{u.org_name}}
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-row class="mb-sm">
+        <nz-form-label [nzSpan]="4">备注</nz-form-label>
+        <nz-form-control [nzSpan]="20" [nzLg]="20">
+            <textarea nz-input [(ngModel)]="u.remark" formControlName="remark" rows="4" maxlength="1000"
+                placeholder="1000字以内"></textarea>
+        </nz-form-control>
+    </nz-form-item>
+    <div class="modal-footer">
+        <button nz-button type="button" (click)="close()">关闭</button>
+        <button nz-button [nzLoading]="http.loading" [nzType]="'primary'" (click)="save()">保存</button>
+    </div>
+</form>

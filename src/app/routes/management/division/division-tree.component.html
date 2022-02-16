@@ -1,0 +1,27 @@
+
+<nz-card [nzBordered]="false" nzTitle="行政区划" [nzExtra]="extra">
+    <nz-input-group [nzSuffix]="suffixIcon">
+        <input type="text" nz-input placeholder="区划名称" [(ngModel)]="searchValue" />
+    </nz-input-group>
+    <ng-template #suffixIcon>
+        <i nz-icon nzType="search"></i>
+    </ng-template>
+    <nz-tree #tree [nzData]="nodes" [nzSearchValue]="searchValue" (nzClick)="onSelect($event)">
+    </nz-tree>
+</nz-card>
+<ng-template #extra>
+    <a class="ant-dropdown-link" nz-dropdown [nzDropdownMenu]="menu" [nzPlacement]="'bottomRight'">
+        <span>操作</span> <i nz-icon nzType="bars"></i>
+    </a>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+        <ul nz-menu>
+            <li nz-menu-item (click)="reload()"><i nz-icon nzType="reload"></i>刷新</li>
+            <li nz-menu-item (click)="add()"><i nz-icon nzType="plus-circle-o"></i>新增</li>
+            <li nz-menu-item>
+                <i nz-icon nzType="delete"></i>
+                <span nz-popconfirm [nzPopconfirmTitle]="'确定删除吗？'" (nzOnConfirm)="delete()">删除</span>
+            </li>
+        </ul>
+    </nz-dropdown-menu>
+</ng-template>
+  
